@@ -177,14 +177,14 @@ bool Laberinto::esSalida(int f, int c){
     return ( f == salida.first  ) && ( c == salida.second );
 }
 
-void Laberinto::loadLaberinto(string fichero){
+bool Laberinto::loadLaberinto(string fichero){
 
     liberar();
     ifstream fich(fichero);
     int f, c = 0;
     int posInicialF = 0, posInicialC = 0;
     int posFinalF = 0, posFinalC = 0;
-    
+    bool hecho = true;
     
     if(fich){
         fich >> f >> c;
@@ -213,16 +213,17 @@ void Laberinto::loadLaberinto(string fichero){
         fich.close();
     }else{
         cerr<< "Error al abrir el fichero de entrada"<<endl;
-        return;
+        hecho = false;
         
     }
 
-    
+    return hecho;
 }
 
-void Laberinto::saveLaberinto(string fichero){
+bool Laberinto::saveLaberinto(string fichero){
 
     ofstream f(fichero);
+    bool hecho = true;
 
     if(f){
         f << this->getFilas() <<" "<< this->getColumnas();
@@ -235,8 +236,14 @@ void Laberinto::saveLaberinto(string fichero){
             }
             f << endl;
         }
+
+        f.close();
+    }else{
+        hecho = false;
     }
-    f.close();
+
+    return hecho;
+    
 }
 
 void Laberinto::imprimirLaberinto(){

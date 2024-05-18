@@ -25,7 +25,7 @@ int main( int argc, char* argv[] ){
     if(argc == 2){
         directorioGuardado = argv[1];
     }else{
-        directorioGuardado = "bin/laberintos";
+        directorioGuardado = ".";
     }
     
     do{
@@ -104,18 +104,17 @@ int main( int argc, char* argv[] ){
                             cin>>f;
                         }
                         if(f != -1){
-                            cout<<"¿Que columnas de la fila "<<f<<" desea cambiar?: (Introduzca todas seguidas, -1 para terminar)"<<endl;
                             do{
+                                cout<<"¿Que columna de la fila "<<f<<" desea cambiar?: (-1 para terminar)"<<endl;
                                 cin>> c;
                                 if(c >=0 && c <l.getColumnas() ){
                                     cout<<"Que desea que sea, muro (-1), casilla libre (0), casilla con moneda (1)"<<endl;
-                                    
                                     cin>>tipo;
                                     while(tipo != -1 && tipo != 0 && tipo != 1){
                                         cout<<"Valor erróneo, vuelva a introducir, muro (-1), casilla libre (0), casilla con moneda (1)"<<endl;
                                         cin>>tipo;
                                     }
-                                    l.setPosicion(i,j) = tipo;
+                                    l.setPosicion(f,c) = tipo;
                                 }else if( c != -1){
                                     cout<<"Valor "<<c<<"de columna erróneo"<<endl;
                                 }
@@ -175,7 +174,7 @@ int main( int argc, char* argv[] ){
 
                 break;
             case 6:
-                aux = directorioGuardado;
+                aux = ".";
                 cout<<"¿Como se llama el fichero de donde va a copiar el laberinto? \t";
                 cin>>nombre;
                 aux += "/" + nombre;

@@ -148,12 +148,12 @@ class Laberinto{
         /**
          *
          */
-        void loadLaberinto(string fichero);
+        bool loadLaberinto(string fichero);
 
         /**
          *
          */
-        void saveLaberinto(string fichero);
+        bool saveLaberinto(string fichero);
         /**
          * @brief Funcion imprimirLaberinto. Imprime el laberinto por pantalla
          */
