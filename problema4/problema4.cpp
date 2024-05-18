@@ -2,188 +2,181 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-//Me propongo programar como si fuera Ned
-//este programita ha sido escrito por Ned Flanders
-//A escribir comentaritos
-typedef vector<vector<int>> vvintcito; //Estoy hartito de escribirlo
 
-//Recuerden rezar niños
-ostream& predicar = cout;
-istream& orar = cin;
+//para escribir menos
+typedef vector<vector<int>> vvint;
 
-void imprimirMatricilla(const vvintcito& palabrillaDeJesús);
-vvintcito horitaDelTe(const vvintcito& escaladita);
-int costeMinimillo(const vvintcito& costecillos, vvintcito& memorizadito,
-    int alturilla, int anchurilla);
-//Sobrecarguilla de funciones
-int corderilloDeDios(int valorcillo1, int valorcillo2);
-int corderilloDeDios(int valorcillo1, int valorcillo2, int valorcillo3);
-vector<int> horitaDeLaMisa(const vvintcito& elPadrecilloNuestro);
+void imprimirMatriz(const vvint& orig);
+vvint SolucionProblema4(const vvint& mountain);
+int costeMinimo(const vvint& costes, vvint& cache,
+    int altura, int anchura);
+//Sobrecarga de funciones
+int minimo(int valor1, int valor2);
+int minimo(int valor1, int valor2, int valor3);
+vector<int> obtenerSolucion(const vvint& cache);
 
 int main (int argc, char *argv[]) {
 
-  char entradaManualita = '\0';
-  int alturita=0, anchito=0, ito, jito;
-  predicar << "Introduzca la alturita de la montaña: ";
-  orar >> alturita;
-  while (alturita <= 0){
-    predicar << "Alturita no válida (alturita > 0): ";
-    orar >> alturita;
+  char entradaManual = '\0';
+  int altura=0, ancho=0, i, j;
+  cout << "Introduzca la altura de la montaña: ";
+  cin >> altura;
+  while (altura <= 0){
+    cout << "Altura no válida (altura > 0): ";
+    cin >> altura;
   }
 
-  predicar << "Introduzca el anchito de la montaña: ";
-  orar >> anchito;
-  while (alturita <= 0){
-    predicar << "Anchito no válido (anchito > 0): ";
-    orar >> anchito;
+  cout << "Introduzca el ancho de la montaña: ";
+  cin >> ancho;
+  while (altura <= 0){
+    cout << "Ancho no válido (ancho > 0): ";
+    cin >> ancho;
   }
   
-  vvintcito escaladita;
-  escaladita.resize(alturita);
-  for(ito = 0; ito < alturita; ito++)
-    escaladita[ito].resize(anchito);
+  vvint mountain;
+  mountain.resize(altura);
+  for(i = 0; i < altura; i++)
+    mountain[i].resize(ancho);
 
-  predicar << "Quiere introducir manualmente los costecitos de la montañita?[y/n] ";
-  orar >> entradaManualita;
-  while(entradaManualita != 'y' &&
-      entradaManualita != 'n'){
-    predicar << "caractercito no válido [y/n] ";
-    orar >> entradaManualita;
+  cout << "Quiere introducir manualmente los costes de la montaña? [y/n] ";
+  cin >> entradaManual;
+  while(entradaManual != 'y' &&
+      entradaManual != 'n'){
+    cout << "entrada no válida [y/n] ";
+    cin >> entradaManual;
   }
 
-  if(entradaManualita == 'y'){
-    for(ito = 0; ito < alturita; ito++){
-      for (jito = 0; jito < anchito; jito++) {
-        predicar << "Piedrita en la alturita " << ito << " y en el anchito " << jito << ": ";
-        orar >> escaladita[ito][jito];
+  if(entradaManual == 'y'){
+    for(i = 0; i < altura; i++){
+      for (j = 0; j < ancho; j++) {
+        cout << "Piedra en la altura " << i << " y en el ancho " << j << ": ";
+        cin >> mountain[i][j];
       }
     }
   }else{
-    unsigned int semillita = 0;
-    int topecitoSuperiorcito = 0;
-    predicar << "Introduzca una semillilla: ";
-    orar >> semillita;
-    srand(semillita);
-    predicar << "Introduzca el costecito máximo posible (mayor o igual a 5): ";
-    orar >> topecitoSuperiorcito;
-    while (topecitoSuperiorcito < 5){
-      predicar << "Numerito no permitido (tiene que ser mayor o igual a 5): ";
-      orar >> topecitoSuperiorcito;
+    unsigned int seed = 0;
+    int topeSuperior = 0;
+    cout << "Introduzca una semillilla: ";
+    cin >> seed;
+    srand(seed);
+    cout << "Introduzca el costecito máximo posible (mayor o igual a 5): ";
+    cin >> topeSuperior;
+    while (topeSuperior < 5){
+      cout << "Numerito no permitido (tiene que ser mayor o igual a 5): ";
+      cin >> topeSuperior;
     }
-    for(ito = 0; ito < alturita; ito++)
-      for(jito = 0; jito < anchito; jito++)
-        escaladita[ito][jito] = rand()%topecitoSuperiorcito+1;
+    for(i = 0; i < altura; i++)
+      for(j = 0; j < ancho; j++)
+        mountain[i][j] = rand()%topeSuperior+1;
   }
-  //Ahora tenemos la montañita, como estaba escrito en el antigüillo testamento 
-  imprimirMatricilla(escaladita);
-  vvintcito resultadillo;
-  resultadillo = horitaDelTe(escaladita);
-  cout << endl << "Este es el resultadillo: " << endl;
-  imprimirMatricilla(resultadillo);
-  vector<int> vectorcillo = horitaDeLaMisa(resultadillo);
+  imprimirMatriz(mountain);
+  vvint resultado;
+  resultado = SolucionProblema4(mountain);
+  cout << endl << "Este es el resultado: " << endl;
+  imprimirMatriz(resultado);
+  vector<int> vector = obtenerSolucion(resultado);
   cout << endl << "Debe de escalar la montañita de la siguiente forma (contandito desde 0): " << endl;
-  for(ito = vectorcillo.size()-1; ito >= 1; ito--)
-    cout << vectorcillo[ito] << "-";
-  cout << vectorcillo[ito];
+  for(i = vector.size()-1; i >= 1; i--)
+    cout << vector[i] << "-";
+  cout << vector[i];
   cout << endl;
   return 0;
 }
 
-void imprimirMatricilla(const vvintcito& palabrillaDeJesús){
-  for(vector<int> profetilla: palabrillaDeJesús){
-    for(int capitulillo: profetilla)
-      predicar << capitulillo << " ";
-    predicar << endl;
+void imprimirMatriz(const vvint& orig){
+  for(vector<int> nvector: orig){
+    for(int nvalor: nvector)
+      cout << nvalor << " ";
+    cout << endl;
   }
 }
 
-vvintcito horitaDelTe(const vvintcito& escaladita){
-  vvintcito resultadillo;
-  int ito;
-  resultadillo.resize(escaladita.size());
-  for(ito = 0; ito < escaladita.size(); ito++)
-    resultadillo[ito].resize(escaladita[ito].size(), -1);
+vvint SolucionProblema4(const vvint& mountain){
+  vvint resultado;
+  int i;
+  resultado.resize(mountain.size());
+  for(i = 0; i < mountain.size(); i++)
+    resultado[i].resize(mountain[i].size(), -1);
   
-  for(ito = 0; ito < resultadillo[0].size(); ito++){
-    costeMinimillo(escaladita, resultadillo, 0, ito);
+  for(i = 0; i < resultado[0].size(); i++){
+    costeMinimo(mountain, resultado, 0, i);
   }
-  return resultadillo;
+  return resultado;
 }
 
-int costeMinimillo(const vvintcito& costecillos, vvintcito& memorizadito,
-    int alturilla, int anchurilla){
+int costeMinimo(const vvint& costes, vvint& cache,
+    int altura, int anchura){
 
-  if(alturilla == costecillos.size()-1){
-    memorizadito[alturilla][anchurilla] = costecillos[alturilla][anchurilla];
-    return costecillos[alturilla][anchurilla]; //Hemos alcanzando la cima, ¡Viva Cristo Rey!
+  if(altura == costes.size()-1){
+    cache[altura][anchura] = costes[altura][anchura];
+    return costes[altura][anchura];
   }
-  if(memorizadito[alturilla][anchurilla] != -1)
-    return memorizadito[alturilla][anchurilla];
-  if(anchurilla == 0){ //Estamos a la izquierdilla del todo toditillo
-    memorizadito[alturilla][anchurilla] = costecillos[alturilla][anchurilla] +
-      corderilloDeDios(
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla),
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla+1)
+  if(cache[altura][anchura] != -1)
+    return cache[altura][anchura];
+  if(anchura == 0){ //Estamos a la izquierda del todo
+    cache[altura][anchura] = costes[altura][anchura] +
+      minimo(
+          costeMinimo(costes, cache, altura+1, anchura),
+          costeMinimo(costes, cache, altura+1, anchura+1)
           );
-  }else if(anchurilla == costecillos[0].size()-1){ //Estamos a la derechilla del todo
-    memorizadito[alturilla][anchurilla] = costecillos[alturilla][anchurilla] +
-      corderilloDeDios(
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla-1),
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla)
+  }else if(anchura == costes[0].size()-1){ //Estamos a la derecha del todo
+    cache[altura][anchura] = costes[altura][anchura] +
+      minimo(
+          costeMinimo(costes, cache, altura+1, anchura-1),
+          costeMinimo(costes, cache, altura+1, anchura)
           );
-  }else{ //No estamos en los bordecillos
-    memorizadito[alturilla][anchurilla] = costecillos[alturilla][anchurilla] +
-      corderilloDeDios(
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla-1),
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla),
-          costeMinimillo(costecillos, memorizadito, alturilla+1, anchurilla+1)
+  }else{ //No estamos en los bordes
+    cache[altura][anchura] = costes[altura][anchura] +
+      minimo(
+          costeMinimo(costes, cache, altura+1, anchura-1),
+          costeMinimo(costes, cache, altura+1, anchura),
+          costeMinimo(costes, cache, altura+1, anchura+1)
           );
   }
-  return memorizadito[alturilla][anchurilla];
+  return cache[altura][anchura];
 }
 
-int corderilloDeDios(int valorcillo1, int valorcillo2){
-  return valorcillo1 < valorcillo2 ? valorcillo1 : valorcillo2;
+int minimo(int valor1, int valor2){
+  return valor1 < valor2 ? valor1 : valor2;
 }
 
-int corderilloDeDios(int valorcillo1, int valorcillo2, int valorcillo3){
-  if(valorcillo1 <  valorcillo2)
-    return valorcillo1 < valorcillo3 ? valorcillo1 : valorcillo3;
+int minimo(int valor1, int valor2, int valor3){
+  if(valor1 <  valor2)
+    return valor1 < valor3 ? valor1 : valor3;
   else
-    return valorcillo2 < valorcillo3 ? valorcillo2 : valorcillo3;
+    return valor2 < valor3 ? valor2 : valor3;
 }
 
-vector<int> horitaDeLaMisa(const vvintcito& elPadrecilloNuestro){
-  vector<int> lasBendiciones(elPadrecilloNuestro.size());
-  int vecinillosSaludados = 0, ito, jito, ayudilla, itofavorito;
-  ayudilla = elPadrecilloNuestro[0][0];
-  itofavorito = 0;
-  for(ito = 1; ito < elPadrecilloNuestro[0].size(); ito++)
-    if(elPadrecilloNuestro[0][ito] < ayudilla){
-      ayudilla = elPadrecilloNuestro[0][ito];
-      itofavorito = ito;
+vector<int> obtenerSolucion(const vvint& cache){
+  vector<int> laSolucion;
+  laSolucion.reserve(cache.size());
+  int i, j, minimo, iMejor;
+  minimo = cache[0][0];
+  iMejor = 0;
+  for(i = 1; i < cache[0].size(); i++)
+    if(cache[0][i] < minimo){
+      minimo = cache[0][i];
+      iMejor = i;
     }
-  lasBendiciones[vecinillosSaludados] = itofavorito;
-  ++vecinillosSaludados;
+  laSolucion.push_back(iMejor);
 
-  for(jito = 1; jito < elPadrecilloNuestro.size(); jito++){
-    if(itofavorito == 0 &&
-        elPadrecilloNuestro[jito][0] > elPadrecilloNuestro[jito][1]) //Homer estamos en el bordecillo de la izquierda
-      itofavorito = 1;
-    else if(itofavorito == elPadrecilloNuestro[0].size()-1 && elPadrecilloNuestro[jito][itofavorito]
-        > elPadrecilloNuestro[jito][itofavorito-1]) //Ahorita en el de la derecha
-      --itofavorito;
+  for(j = 1; j < cache.size(); j++){
+    if(iMejor == 0 &&
+        cache[j][0] > cache[j][1]) //Homer estamos en el bordecillo de la izquierda
+      iMejor = 1;
+    else if(iMejor == cache[0].size()-1 && cache[j][iMejor]
+        > cache[j][iMejor-1]) //Ahorita en el de la derecha
+      --iMejor;
 
     else{
-      if(elPadrecilloNuestro[jito][itofavorito-1] < elPadrecilloNuestro[jito][itofavorito+1])
-        itofavorito = elPadrecilloNuestro[jito][itofavorito-1] < elPadrecilloNuestro[jito][itofavorito] ?
-          itofavorito-1 : itofavorito;
+      if(cache[j][iMejor-1] < cache[j][iMejor+1])
+        iMejor = cache[j][iMejor-1] < cache[j][iMejor] ?
+          iMejor-1 : iMejor;
       else
-        itofavorito = elPadrecilloNuestro[jito][itofavorito+1] < elPadrecilloNuestro[jito][itofavorito] ?
-          itofavorito+1 : itofavorito;
+        iMejor = cache[j][iMejor+1] < cache[j][iMejor] ?
+          iMejor+1 : iMejor;
     }
-    lasBendiciones[vecinillosSaludados] = itofavorito;
-    ++vecinillosSaludados;
+    laSolucion.push_back(iMejor);
   }
-  return lasBendiciones;
+  return laSolucion;
 }
