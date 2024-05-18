@@ -191,31 +191,33 @@ void Laberinto::loadLaberinto(string fichero){
         fich >> posInicialF >> posInicialC;
         fich >> posFinalF >> posFinalC;
 
+        if(f < 0 || c < 0){
+            throw out_of_range("Error, el lado del laberinto almacenado en el fichero es erróneo");
+        }
+        
+        inicializar(f , c);
+        this->filas = f;
+        this->columnas = c;
+        monedas = 0;
+        inicio = make_pair(posInicialF,posInicialC);
+        salida = make_pair(posFinalF, posFinalC);
+
+        int aux;
+        for(int i =0 ; i< filas; i++){
+            for(int j = 0; j < columnas; j++){
+                fich >> aux;
+                this->setPosicion(i,j) = aux;
+            }
+        }
+        
+        fich.close();
     }else{
         cerr<< "Error al abrir el fichero de entrada"<<endl;
+        return;
         
     }
 
-    if(f < 0 || c < 0){
-        throw out_of_range("Error, el lado del laberinto almacenado en el fichero es erróneo");
-    }
     
-    inicializar(f , c);
-    this->filas = f;
-    this->columnas = c;
-    monedas = 0;
-    inicio = make_pair(posInicialF,posInicialC);
-    salida = make_pair(posFinalF, posFinalC);
-
-    int aux;
-    for(int i =0 ; i< filas; i++){
-        for(int j = 0; j < columnas; j++){
-            fich >> aux;
-            this->setPosicion(i,j) = aux;
-        }
-    }
-    
-    fich.close();
 }
 
 void Laberinto::saveLaberinto(string fichero){
