@@ -162,10 +162,10 @@ vector<int> obtenerSolucion(const vvint& cache){
 
   for(j = 1; j < cache.size(); j++){
     if(iMejor == 0 &&
-        cache[j][0] > cache[j][1]) //Homer estamos en el bordecillo de la izquierda
+        cache[j][0] > cache[j][1]) //Estamos en el borde de la izquierda
       iMejor = 1;
     else if(iMejor == cache[0].size()-1 && cache[j][iMejor]
-        > cache[j][iMejor-1]) //Ahorita en el de la derecha
+        < cache[j][iMejor-1]) //Ahora en el de la derecha
       --iMejor;
 
     else{
