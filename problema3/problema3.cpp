@@ -164,26 +164,31 @@ int main(int argc, char* argv[]){
     vector<pair<int,int>> camino;
     const int tiempo = 500;
 
-    archivo = argv[1];
-    lab.loadLaberinto( archivo );
-    
-    matriz = generarMatrizMonedas(lab);
-    cout<<"Laberinto propuesto:"<<endl;
-    lab.imprimirLaberinto();
-    camino = reconstruirCamino(matriz);
-    imprimir(matriz);
-    cout<<"Introduzca cualquier letra para continuar"<<endl;
-    string str;
-    cin>>str;
-    system("clear");
-    
-    for(int i = camino.size()-1 ; i >= 0; i--){
+    if(argc == 2){
+        archivo = argv[1];
+        lab.loadLaberinto( archivo );
+        
+        matriz = generarMatrizMonedas(lab);
+        cout<<"Laberinto propuesto:"<<endl;
+        lab.imprimirLaberinto();
+        camino = reconstruirCamino(matriz);
+        imprimir(matriz);
+        cout<<"Introduzca cualquier letra para continuar"<<endl;
+        string str;
+        cin>>str;
+        system("clear");
+        
+        for(int i = camino.size()-1 ; i >= 0; i--){
+            cout<<"Una solución que maximiza el número de monedas es:"<<endl;
+            lab.imprimirLaberintoRecorrido();
+            std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
+            system("clear");
+            lab.setRecorrida( camino[i].first, camino[i].second, true ) ;
+        }
         cout<<"Una solución que maximiza el número de monedas es:"<<endl;
         lab.imprimirLaberintoRecorrido();
-        std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
-        system("clear");
-        lab.setRecorrida( camino[i].first, camino[i].second, true ) ;
+    }else{
+        cerr<<"Uso: ./problema3.bin laberintos/<nombreDelFichero"<<endl;
     }
-    cout<<"Solución:"<<endl;
-    lab.imprimirLaberintoRecorrido();
+   
 }   
