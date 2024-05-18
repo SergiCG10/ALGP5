@@ -23,6 +23,12 @@ void printMatrix(const vector<vector<int>>& dist) {
 
 // Función para recuperar el camino más corto entre dos nodos
 void getPath(int u, int v, const vector<vector<int>>& next, vector<int>& path) {
+
+    int n = next.size();
+    if (u < 0 || u >= n || v < 0 || v >= n) {
+        throw out_of_range("Las paradas inicial o final están fuera de los límites del rio.");
+    }
+    
     if (next[u][v] == -1) {
         return;
     }
@@ -120,7 +126,7 @@ int main() {
     //Imprime el camino más corto desde el punto inicial y final introducidos
     for (int i = 0 ; i < path.size() ; i++) {
         if (i != 0)
-            cout << " - ";
+            cout << " -> ";
         cout << path[i]+1;
     }
     cout << endl;
