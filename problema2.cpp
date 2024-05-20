@@ -5,7 +5,8 @@
 using namespace std;
 
 void ImprimeMatriz(vector<vector<int>> matrix);
-void RellenarMatriz(vector<vector<int>> matrix);
+void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesores, vector<vector<int>> & tiempos);
+void GetPath(const vector<vector<int>> & predecesores, int & partida, int & destino,vector<int> & camino);
 static const int ESCALA=1;
 
 int main(int argc, char* argv[])
@@ -75,8 +76,19 @@ int main(int argc, char* argv[])
         cout<<"El viaje tiene una duracion de 0 horas, la partida y el origen coinciden"<<endl;
         return 0;
     }
+    else{
+        vector<vector<int>> predecesores, tabla;
+        Floyd(matrix,predecesores,tabla);
     
     
+    vector<int> VueloMasCorto;
+    GetPath(predecesores, partida, destino,VueloMasCorto);
+    cout<<"Vuelo mas corto entre "<<partida<<" y "<<destino<<endl;
+    for(int i=0;i<VueloMasCorto.size();i++)
+        cout<<VueloMasCorto[i]<<" -> ";
+        
+    
+    }
     return 0;
 }
 
@@ -101,6 +113,40 @@ void ImprimeMatriz(vector<vector<int>> matrix)
     cout<<endl;
 }
 
-void RellenarMatriz(vector<vector<int>> matrix){
+void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesores, vector<vector<int>> & tiempos){
+    
+    int n=vuelos.size(); 
+    tiempos=vuelos;
+    //ImprimeMatriz(tiempos);
+    predecesores.resize(n);
+    for(int i=0;i<n;i++)
+        predecesores[i].resize(n);
+    for(int i=0;i<n;i++)
+        predecesores[i][i]=-1;
+                                //calculo de la tabla  
+    for (int k=0; k<n; k++)
+        for (int i=0; i<n; i++)
+            for (int j=0; j<n; j++){
+                if(tiempos[i][j]!=-1 && tiempos[i][k]!=-1 && tiempos[k][j]!=-1)
+                    if (tiempos[i][k] + tiempos[k][j] < tiempos[i][j]){
+                        tiempos[i][j] = tiempos[i][k] + tiempos[k][j];
+                        predecesores[i][j]=k;
+                    }
+            }
+    ImprimeMatriz(predecesores);
+            
+    
+}
+
+void GetPath(const vector<vector<int>> & predecesores, int & partida,int & destino, vector<int> & camino){
+    if (predecesores[partida][destino] == -1) {
+        return;
+    }
+    camino.push_back(partida);
+    while (partida != destino) {
+        partida = predecesores[partida][destino];
+        camino.push_back(partida);
+    }
+
 
 }
