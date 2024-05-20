@@ -2,7 +2,7 @@ CXX = g++
 BIN_DIR = ./bin
 FLAGS = -std=c++17
 
-PROBLEMAS = problema3 generarLaberintos problema4 problema1
+PROBLEMAS = problema3 generarLaberintos problema4 problema1 problema2
 
 all: $(PROBLEMAS)
 
