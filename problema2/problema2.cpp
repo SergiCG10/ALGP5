@@ -6,7 +6,7 @@ using namespace std;
 
 void ImprimeMatriz(vector<vector<int>> matrix);
 void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesores, vector<vector<int>> & tiempos);
-void GetPath(const vector<vector<int>> & predecesores, int & partida, int & destino,vector<int> & camino);
+void GetPath(const vector<vector<int>> & vuelos,const vector<vector<int>> & predecesores, int & partida, int & destino,vector<int> & camino);
 static const int ESCALA=1;
 
 int main(int argc, char* argv[])
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
         
         vector<int> VueloMasCorto;
         cout<<"Vuelo mas corto entre "<<partida<<" y "<<destino<<endl;
-        GetPath(predecesores, partida, destino,VueloMasCorto);
+        GetPath(matrix,predecesores, partida, destino,VueloMasCorto);
         
         for(int i=0;i<VueloMasCorto.size();i++){
             cout<<VueloMasCorto[i];
@@ -128,7 +128,7 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
     for(int i=0;i<n;i++)
         for(int j=0;j<n;j++)
             if(tiempos[i][j]!=-1 && i!=j)
-                predecesores[i][i]=j;
+                predecesores[i][j]=j;
     
     for(int i=0;i<n;i++)
         predecesores[i][i]=-1;
@@ -148,7 +148,7 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
     
 }
 
-void GetPath(const vector<vector<int>> & predecesores, int & partida,int & destino, vector<int> & camino){
+void GetPath(const vector<vector<int>> & vuelos,const vector<vector<int>> & predecesores, int & partida,int & destino, vector<int> & camino){
     int tiempo=0;
     if (predecesores[partida][destino] == -1) {
         cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
@@ -157,7 +157,7 @@ void GetPath(const vector<vector<int>> & predecesores, int & partida,int & desti
     while (partida != destino) {
         camino.push_back(partida);
         partida = predecesores[partida][destino];
-        tiempo+=partida;
+        tiempo+=vuelos[partida][destino];
         cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
         
 
