@@ -60,9 +60,7 @@ void imprimir(vector<vector<int>>matriz){
                 cout<<matriz[i][j]<<" ";
             }else{
                 cout<<" "<<matriz[i][j]<<" ";
-            }
-            
-            
+            }    
         }
         cout<<endl;
     }
@@ -77,28 +75,33 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
     }
     //Rellenamos caso base para la posicion 0, n-1
     salida[0][l.getColumnas()-1 ] = l.getPosicion(0,l.getColumnas() -1 ) == 1 ? 1: 0;
-    //Rellenamos caso base de la primera fila
+
+    
     int valor = 0;
     bool llegamosMuro = false;
-    for(int j = l.getColumnas() - 1; j > 0 ; j--){
 
-        llegamosMuro = l.getPosicion(0,j-1) == -1;
+    //Rellenamos caso base de la primera fila
+    for(int j = l.getColumnas() - 2; j >= 0 ; j--){
+
+        llegamosMuro = llegamosMuro || l.getPosicion(0,j) == -1;
 
         if(!llegamosMuro){
-            valor = l.getPosicion(0,j-1) == 1 ? 1: 0;
-            salida[0][j-1] = salida[0][j] + valor;
+            valor = l.getPosicion(0,j+1) == 1 ? 1: 0;
+            salida[0][j] = salida[0][j+1] + valor;
         }else{
-            salida[0][j-1] = -1;
+            salida[0][j] = -1;
         }
         
     }
+
+    llegamosMuro = false;
     //Rellenamos caso base de la primera columna
-    for(int i = 1; i < l.getFilas() ; i++){
+    for(int i = 1; i < l.getFilas(); i++){
 
-        llegamosMuro = l.getPosicion(i,l.getColumnas()-1) == -1;
+        llegamosMuro = llegamosMuro || l.getPosicion(i,l.getColumnas()-1) == -1;
 
-        if(!llegamosMuro){
-            valor = l.getPosicion(i,l.getColumnas()-1) == 1 ? 1: 0;
+        if(!llegamosMuro){   
+            valor = l.getPosicion(i-1,l.getColumnas()-1) == 1 ? 1: 0;
             salida[i][l.getColumnas()-1] = salida[i-1][l.getColumnas()-1] + valor;
         }else{
             salida[i][l.getColumnas()-1] = -1;
@@ -106,13 +109,14 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
         
     }
 
-    
+    llegamosMuro = false;    
     for(int i = 1; i < l.getFilas() ; i++){
         
         for(int j = l.getColumnas()-2; j >=0; j--){
             
             llegamosMuro = l.getPosicion(i,j) == -1;
             if(!llegamosMuro){
+                
                 valor = l.getPosicion(i,j) == 1 ? 1: 0;
                 salida[i][j] = maximo( salida[i-1][j], salida[i][j+1], salida[i-1][j+1] ) ;
 
@@ -129,30 +133,38 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
     return salida;
 }
 
-vector<pair<int,int>> reconstruirCamino(vector<vector<int>> matriz){
-    vector<pair<int,int>> salida;
+pair< vector<pair<int,int>>, bool> reconstruirCamino(vector<vector<int>> matriz){
+    vector<pair<int,int>> v;
     int posI = matriz.size() -1, posJ = 0;
     int max;
+    bool posible = true;
+    pair< vector<pair<int,int>>, bool> salida;
 
-    salida.push_back( make_pair(posI,posJ));
+    v.push_back( make_pair(posI,posJ));
 
-    while( posI != 0 || posJ != matriz[0].size()-1 ){
+    while( (posI != 0 || posJ != matriz[0].size()-1 ) && posible ){
 
         max = maximo( arriba(matriz, posI, posJ), derecha(matriz, posI, posJ), diagonalSupDcha(matriz, posI, posJ) );
-        
-        if( max == diagonalSupDcha(matriz, posI, posJ) ){
-            posI--;
-            posJ++;
-        }else if(max ==  arriba(matriz, posI, posJ) ){
-            posI--;
-        }else if(max == derecha(matriz, posI, posJ)){
-            posJ++;
-        }else{
-            cout<<"Error";
-        }
 
-        salida.push_back( make_pair(posI,posJ) );
+        if(max == -1){
+            cerr<<"No hay solución para el laberinto"<<endl;
+            posible = false;
+        }else{
+            if( max == diagonalSupDcha(matriz, posI, posJ) ){
+                posI--;
+                posJ++;
+            }else if(max ==  arriba(matriz, posI, posJ) ){
+                posI--;
+            }else if(max == derecha(matriz, posI, posJ)){
+                posJ++;
+            }else{
+                cout<<"Error";
+            }
+            v.push_back( make_pair(posI,posJ) );
+        } 
     }
+    salida.first = v;
+    salida.second = posible;
 
     return salida;
 }
@@ -161,8 +173,9 @@ int main(int argc, char* argv[]){
     Laberinto lab;
     string archivo;
     vector<vector<int>> matriz;
-    vector<pair<int,int>> camino;
+    pair<vector<pair<int,int>>,bool> sol;
     const int tiempo = 500;
+   
 
     if(argc == 2){
         archivo = argv[1];
@@ -171,22 +184,27 @@ int main(int argc, char* argv[]){
             matriz = generarMatrizMonedas(lab);
             cout<<"Laberinto propuesto:"<<endl;
             lab.imprimirLaberinto();
-            camino = reconstruirCamino(matriz);
+            sol = reconstruirCamino(matriz);
             imprimir(matriz);
             cout<<"Introduzca cualquier letra para continuar"<<endl;
             string str;
             cin>>str;
             system("clear");
             
-            for(int i = camino.size()-1 ; i >= 0; i--){
+            if(sol.second){
+                for(int i = sol.first.size()-1 ; i >= 0; i--){
+                    cout<<"Una solución que maximiza el número de monedas es:"<<endl;
+                    lab.imprimirLaberintoRecorrido();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
+                    system("clear");
+                    lab.setRecorrida( sol.first[i].first, sol.first[i].second, true ) ;
+                }
                 cout<<"Una solución que maximiza el número de monedas es:"<<endl;
                 lab.imprimirLaberintoRecorrido();
-                std::this_thread::sleep_for(std::chrono::milliseconds(tiempo));
-                system("clear");
-                lab.setRecorrida( camino[i].first, camino[i].second, true ) ;
+            }else{
+                cout<<"No hay solución para este laberinto"<<endl;
             }
-            cout<<"Una solución que maximiza el número de monedas es:"<<endl;
-            lab.imprimirLaberintoRecorrido();
+            
         }else{
             cerr<<"Error abriendo el archivo"<<endl;
         }
