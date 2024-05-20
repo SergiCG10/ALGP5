@@ -79,16 +79,15 @@ int main(int argc, char* argv[])
     else{
         vector<vector<int>> predecesores, tabla;
         Floyd(matrix,predecesores,tabla);
-    
-    
-    vector<int> VueloMasCorto;
-    GetPath(predecesores, partida, destino,VueloMasCorto);
-    cout<<"Vuelo mas corto entre "<<partida<<" y "<<destino<<endl;
-    for(int i=0;i<VueloMasCorto.size();i++)
-        cout<<VueloMasCorto[i]<<" -> ";
-        
-    
-    }
+        /*
+        vector<int> VueloMasCorto;
+        GetPath(predecesores, partida, destino,VueloMasCorto);
+        cout<<"Vuelo mas corto entre "<<partida<<" y "<<destino<<endl;
+        for(int i=0;i<VueloMasCorto.size();i++)
+            cout<<VueloMasCorto[i]<<" -> ";
+            
+        */
+        }
     return 0;
 }
 
@@ -127,7 +126,7 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
     for (int k=0; k<n; k++)
         for (int i=0; i<n; i++)
             for (int j=0; j<n; j++){
-                if(tiempos[i][j]!=-1 && tiempos[i][k]!=-1 && tiempos[k][j]!=-1)
+                //if(tiempos[i][j]!=-1 && tiempos[i][k]!=-1 && tiempos[k][j]!=-1)
                     if (tiempos[i][k] + tiempos[k][j] < tiempos[i][j]){
                         tiempos[i][j] = tiempos[i][k] + tiempos[k][j];
                         predecesores[i][j]=k;
