@@ -59,6 +59,8 @@ int main(int argc, char* argv[])
                         matrix[i][j]=aux;
                     }else
                         matrix[i][j]=aux;
+                }else{
+                    matrix[i][j]=0;
                 }
                 
             }
@@ -155,6 +157,8 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
                     if ( tiempos[i][k] + tiempos[k][j] + ESCALA < tiempos[i][j]){
                         tiempos[i][j] = tiempos[i][k] + tiempos[k][j] + ESCALA;
                         predecesores[i][j]=k;
+
+                        //ImprimeMatriz(tiempos);
                     }
             }
     ImprimeMatriz(predecesores);
