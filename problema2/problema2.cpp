@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
+#include <limits>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ void ImprimeMatriz(vector<vector<int>> matrix);
 void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesores, vector<vector<int>> & tiempos);
 void GetPath(const vector<vector<int>> & vuelos,const vector<vector<int>> & predecesores, int & partida, int & destino,vector<int> & camino);
 static const int ESCALA=1;
+const int INF = numeric_limits<int>::max();
 
 int main(int argc, char* argv[])
 {
@@ -36,9 +38,9 @@ int main(int argc, char* argv[])
         for(int i=0;i<ciudades;i++){
             for(int j=0;j<ciudades;j++){
                 if(i!=j)
-                    matrix[i][j]=rand()%10;
+                    matrix[i][j]=rand()%10+1;
                 else
-                    matrix[i][j]=-1;
+                    matrix[i][j]=0;
             }
         }
     }else{
@@ -48,7 +50,7 @@ int main(int argc, char* argv[])
                     cin>>matrix[i][j];
                 }
                 else
-                    matrix[i][j]=-1;
+                    matrix[i][j]=0;
             }
         }    
     }
@@ -82,7 +84,7 @@ int main(int argc, char* argv[])
         
         vector<int> VueloMasCorto;
         cout<<"Vuelo mas corto entre "<<partida<<" y "<<destino<<endl;
-        GetPath(matrix,predecesores, partida, destino,VueloMasCorto);
+        GetPath(tabla,predecesores, partida, destino,VueloMasCorto);
         
         for(int i=0;i<VueloMasCorto.size();i++){
             cout<<VueloMasCorto[i];
@@ -127,11 +129,11 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
         predecesores[i].resize(n);
     for(int i=0;i<n;i++)
         for(int j=0;j<n;j++)
-            if(tiempos[i][j]!=-1 && i!=j)
+            if(tiempos[i][j]!=INF && i!=j)
                 predecesores[i][j]=j;
     
     for(int i=0;i<n;i++)
-        predecesores[i][i]=-1;
+        predecesores[i][i]=0;
         
                                 //calculo de la tabla  
     for (int k=0; k<n; k++)
@@ -149,19 +151,20 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
 }
 
 void GetPath(const vector<vector<int>> & vuelos,const vector<vector<int>> & predecesores, int & partida,int & destino, vector<int> & camino){
-    int tiempo=0;
-    if (predecesores[partida][destino] == -1) {
+    int tiempo=vuelos[partida][destino];
+    if(tiempo==0)
+        cout<<"No hay camino directo entre "<<partida<< " destino "<<destino<<endl;
+    cout<<"partida: "<<partida<<" destino: "<<destino<<endl;
+    if (predecesores[partida][destino] == INF) {
         cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
         return;
     }
     while (partida != destino) {
         camino.push_back(partida);
         partida = predecesores[partida][destino];
-        tiempo+=vuelos[partida][destino];
-        cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
-        
-
+            
     }
+    cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
     camino.push_back(destino);
 
 }
