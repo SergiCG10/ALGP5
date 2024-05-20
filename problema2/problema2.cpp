@@ -157,8 +157,6 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
                     if ( tiempos[i][k] + tiempos[k][j] + ESCALA < tiempos[i][j]){
                         tiempos[i][j] = tiempos[i][k] + tiempos[k][j] + ESCALA;
                         predecesores[i][j]=k;
-
-                        //ImprimeMatriz(tiempos);
                     }
             }
     ImprimeMatriz(predecesores);
