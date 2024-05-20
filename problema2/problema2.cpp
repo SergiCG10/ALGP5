@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void ImprimeMatriz(vector<vector<int>> matrix);
+void ImprimeMatriz(const vector<vector<int>> & matrix);
 void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesores, vector<vector<int>> & tiempos);
 void GetPath(const vector<vector<int>> & vuelos,const vector<vector<int>> & predecesores, int & partida, int & destino,vector<int> & camino);
 static const int ESCALA=1;
@@ -37,8 +37,12 @@ int main(int argc, char* argv[])
         cout<<"Se procede a inicializar con valores aleatorios"<<endl;
         for(int i=0;i<ciudades;i++){
             for(int j=0;j<ciudades;j++){
-                if(i!=j)
-                    matrix[i][j]=rand()%10+1;
+                if(i!=j){
+                    int aux=rand()%10+1;
+                    matrix[i][j]=aux;
+                    if(aux==10)
+                        matrix[i][j]=INF;
+                }
                 else
                     matrix[i][j]=0;
             }
@@ -46,9 +50,13 @@ int main(int argc, char* argv[])
     }else{
         for(int i=0;i<ciudades;i++){
             for(int j=0;j<ciudades;j++){
+                int aux;
                 if(i!=j){
-                    cin>>matrix[i][j];
-                }
+                    cin>>aux;
+                    if(aux<0){
+                        aux=INF;
+                        matrix[i][j]=aux;
+                    }
                 else
                     matrix[i][j]=0;
             }
@@ -95,28 +103,22 @@ int main(int argc, char* argv[])
             
         
         }
+
+    }
     return 0;
 }
 
-void ImprimeMatriz(vector<vector<int>> matrix)
-{
-    cout<<"    ";
-    for(int i=0;i<matrix.size();i++)
-        cout<<i<<" ";
-    cout<<endl;
-    cout<<"    ";
-
-    for(int i=0;i<matrix.size();i++)
-        cout<<"--";
-    cout<<endl;
-    for(int i=0; i<matrix.size();i++){
-        cout<<i<<"|  ";
-        for(int j=0;j<matrix.size();j++)
-            cout<<matrix[i][j]<<" ";
-        cout<<endl;
+void ImprimeMatriz(const vector<vector<int>> & matrix) {
+    int n = matrix.size();
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (matrix[i][j] == INF)
+                cout << "INF ";
+            else
+                cout << " " << matrix[i][j] << "  ";
+        }
+        cout << endl;
     }
-
-    cout<<endl;
 }
 
 void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesores, vector<vector<int>> & tiempos){
@@ -152,11 +154,8 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
 
 void GetPath(const vector<vector<int>> & vuelos,const vector<vector<int>> & predecesores, int & partida,int & destino, vector<int> & camino){
     int tiempo=vuelos[partida][destino];
-    if(tiempo==0)
-        cout<<"No hay camino directo entre "<<partida<< " destino "<<destino<<endl;
-    cout<<"partida: "<<partida<<" destino: "<<destino<<endl;
     if (predecesores[partida][destino] == INF) {
-        cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
+        cout<<"No hay ninguna ruta posible"<<endl;
         return;
     }
     while (partida != destino) {
