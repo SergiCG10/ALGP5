@@ -75,9 +75,9 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
     for(int i = 0; i< l.getFilas(); i++){
         salida[i].resize(l.getColumnas());
     }
-
+    //Rellenamos caso base para la posicion 0, n-1
     salida[0][l.getColumnas()-1 ] = l.getPosicion(0,l.getColumnas() -1 ) == 1 ? 1: 0;
-
+    //Rellenamos caso base de la primera fila
     int valor = 0;
     bool llegamosMuro = false;
     for(int j = l.getColumnas() - 1; j > 0 ; j--){
@@ -92,7 +92,7 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
         }
         
     }
-
+    //Rellenamos caso base de la primera columna
     for(int i = 1; i < l.getFilas() ; i++){
 
         llegamosMuro = l.getPosicion(i,l.getColumnas()-1) == -1;
