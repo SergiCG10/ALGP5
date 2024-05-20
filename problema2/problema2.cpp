@@ -151,7 +151,6 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
             for (int j=0; j<n; j++){
                 if(tiempos[i][k] != INF && tiempos[k][j] != INF)
                     if (tiempos[i][k] + tiempos[k][j] < tiempos[i][j]){
-                        cout<<tiempos[i][j]<<endl;
                         tiempos[i][j] = tiempos[i][k] + tiempos[k][j];
                         predecesores[i][j]=k;
                     }
