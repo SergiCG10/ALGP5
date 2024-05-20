@@ -27,9 +27,9 @@ int main(int argc, char* argv[])
     for(int i=0;i<ciudades;i++)
         matrix[i].resize(ciudades);
 
-    cout<<"¿Desea rellenar la matriz a mano? (escriba y en caso afirmativo)"<<endl;
+    cout<<"¿Desea rellenar la matriz a mano? (escriba 'y' en caso afirmativo)"<<endl;
     cin>>respuesta;
-    
+    srand(semilla);
     if(respuesta !='y')
     {
         cout<<"Se procede a inicializar con valores aleatorios"<<endl;
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
                 if(i!=j)
                     matrix[i][j]=rand()%10;
                 else
-                    matrix[i][j]=0;
+                    matrix[i][j]=-1;
             }
         }
     }else{
@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
                     cin>>matrix[i][j];
                 }
                 else
-                    matrix[i][j]=0;
+                    matrix[i][j]=-1;
             }
         }    
     }
@@ -126,12 +126,18 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
     for(int i=0;i<n;i++)
         predecesores[i].resize(n);
     for(int i=0;i<n;i++)
-        predecesores[i][i]=0;
+        for(int j=0;j<n;j++)
+            if(tiempos[i][j]!=-1 && i!=j)
+                predecesores[i][i]=j;
+    
+    for(int i=0;i<n;i++)
+        predecesores[i][i]=-1;
+        
                                 //calculo de la tabla  
     for (int k=0; k<n; k++)
         for (int i=0; i<n; i++)
             for (int j=0; j<n; j++){
-                //if(tiempos[i][j]!=-1 && tiempos[i][k]!=-1 && tiempos[k][j]!=-1)
+                if(tiempos[i][k]>0 && tiempos[k][j]>0)
                     if (tiempos[i][k] + tiempos[k][j] < tiempos[i][j]){
                         tiempos[i][j] = tiempos[i][k] + tiempos[k][j];
                         predecesores[i][j]=k;
@@ -143,12 +149,17 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
 }
 
 void GetPath(const vector<vector<int>> & predecesores, int & partida,int & destino, vector<int> & camino){
+    int tiempo=0;
     if (predecesores[partida][destino] == -1) {
+        cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
         return;
     }
     while (partida != destino) {
         camino.push_back(partida);
         partida = predecesores[partida][destino];
+        tiempo+=partida;
+        cout<<"Tiempo de vuelo: "<<tiempo<<" horas"<<endl;
+        
 
     }
     camino.push_back(destino);
