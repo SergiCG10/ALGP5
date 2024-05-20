@@ -79,14 +79,19 @@ int main(int argc, char* argv[])
     else{
         vector<vector<int>> predecesores, tabla;
         Floyd(matrix,predecesores,tabla);
-        /*
+        
         vector<int> VueloMasCorto;
-        GetPath(predecesores, partida, destino,VueloMasCorto);
         cout<<"Vuelo mas corto entre "<<partida<<" y "<<destino<<endl;
-        for(int i=0;i<VueloMasCorto.size();i++)
-            cout<<VueloMasCorto[i]<<" -> ";
+        GetPath(predecesores, partida, destino,VueloMasCorto);
+        
+        for(int i=0;i<VueloMasCorto.size();i++){
+            cout<<VueloMasCorto[i];
+            if(i!=VueloMasCorto.size()-1)
+                cout<<" -> ";
+        }
+        cout<<endl;
             
-        */
+        
         }
     return 0;
 }
@@ -95,7 +100,7 @@ void ImprimeMatriz(vector<vector<int>> matrix)
 {
     cout<<"    ";
     for(int i=0;i<matrix.size();i++)
-        cout<<i+1<<" ";
+        cout<<i<<" ";
     cout<<endl;
     cout<<"    ";
 
@@ -121,7 +126,7 @@ void Floyd(const vector<vector<int>> & vuelos, vector<vector<int>> & predecesore
     for(int i=0;i<n;i++)
         predecesores[i].resize(n);
     for(int i=0;i<n;i++)
-        predecesores[i][i]=-1;
+        predecesores[i][i]=0;
                                 //calculo de la tabla  
     for (int k=0; k<n; k++)
         for (int i=0; i<n; i++)
@@ -141,11 +146,11 @@ void GetPath(const vector<vector<int>> & predecesores, int & partida,int & desti
     if (predecesores[partida][destino] == -1) {
         return;
     }
-    camino.push_back(partida);
     while (partida != destino) {
-        partida = predecesores[partida][destino];
         camino.push_back(partida);
-    }
+        partida = predecesores[partida][destino];
 
+    }
+    camino.push_back(destino);
 
 }
