@@ -42,9 +42,10 @@ int main(int argc, char* argv[])
                     matrix[i][j]=aux;
                     if(aux==10)
                         matrix[i][j]=INF;
-                }
-                else
+
+                }else
                     matrix[i][j]=0;
+
             }
         }
     }else{
@@ -57,12 +58,12 @@ int main(int argc, char* argv[])
                         aux=INF;
                         matrix[i][j]=aux;
                     }
-                else
+                }else
                     matrix[i][j]=0;
             }
         }    
     }
-
+    
     int partida,destino;
     cout<<"\nSe muestran los vuelos disponibles a continuación."<<endl;
     ImprimeMatriz(matrix);
@@ -102,15 +103,22 @@ int main(int argc, char* argv[])
         cout<<endl;
             
         
-        }
-
     }
     return 0;
 }
+    
 
 void ImprimeMatriz(const vector<vector<int>> & matrix) {
     int n = matrix.size();
+
+    cout<<"   ";
+    for(int i =0; i< n; ++i){
+        cout<<" " << i << "  ";
+    }
+    cout<<endl;
+
     for (int i = 0; i < n; ++i) {
+        cout<<i<<"  ";
         for (int j = 0; j < n; ++j) {
             if (matrix[i][j] == INF)
                 cout << "INF ";
