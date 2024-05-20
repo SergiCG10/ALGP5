@@ -2,9 +2,21 @@ CXX = g++
 BIN_DIR = ./bin
 FLAGS = -std=c++17
 
-PROBLEMAS = problema3 generarLaberintos problema4
+PROBLEMAS = problema3 generarLaberintos problema4 problema1
 
 all: $(PROBLEMAS)
+
+#Regla de construcción para problema1
+problema1: $(BIN_DIR)/problema1.bin
+
+$(BIN_DIR)/problema1.bin: problema1/problema1.cpp
+	$(CXX) $(FLAGS) -o $@ $^
+
+#Regla de construcción para problema2
+problema2: $(BIN_DIR)/problema2.bin
+
+$(BIN_DIR)/problema2.bin: problema2/problema2.cpp
+	$(CXX) $(FLAGS) -o $@ $^
 
 # Regla de construcción para Laberinto.o
 $(BIN_DIR)/Laberinto.o: problema3/Laberinto.cpp problema3/Laberinto.h
