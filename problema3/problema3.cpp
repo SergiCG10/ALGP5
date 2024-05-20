@@ -70,15 +70,18 @@ void imprimir(vector<vector<int>>matriz){
 vector< vector<int> > generarMatrizMonedas(Laberinto l){
     vector< vector<int>> salida;
     salida.resize(l.getFilas());
+    int valor = 0;
+    bool llegamosMuro = false;
+
     for(int i = 0; i< l.getFilas(); i++){
         salida[i].resize(l.getColumnas());
     }
-    //Rellenamos caso base para la posicion 0, n-1
-    salida[0][l.getColumnas()-1 ] = l.getPosicion(0,l.getColumnas() -1 ) == 1 ? 1: 0;
 
-    
-    int valor = 0;
-    bool llegamosMuro = false;
+    //Rellenamos caso base para la posicion 0, n-1
+    if(l.getPosicion(0, l.getColumnas()-1) != -1){
+        salida[0][l.getColumnas()-1 ] = l.getPosicion(0,l.getColumnas() -1 ) == 1 ? 1: 0;
+    }
+    salida[0][l.getColumnas()-1 ] = -1;
 
     //Rellenamos caso base de la primera fila
     for(int j = l.getColumnas() - 2; j >= 0 ; j--){
@@ -140,14 +143,17 @@ pair< vector<pair<int,int>>, bool> reconstruirCamino(vector<vector<int>> matriz)
     bool posible = true;
     pair< vector<pair<int,int>>, bool> salida;
 
-    v.push_back( make_pair(posI,posJ));
+    if( matriz[0][matriz[0].size()] == -1){
+        posible = false;
+    }else{
+        v.push_back( make_pair(posI,posJ));
+    }
 
     while( (posI != 0 || posJ != matriz[0].size()-1 ) && posible ){
 
         max = maximo( arriba(matriz, posI, posJ), derecha(matriz, posI, posJ), diagonalSupDcha(matriz, posI, posJ) );
 
         if(max == -1){
-            cerr<<"No hay solución para el laberinto"<<endl;
             posible = false;
         }else{
             if( max == diagonalSupDcha(matriz, posI, posJ) ){
@@ -182,10 +188,13 @@ int main(int argc, char* argv[]){
         if(lab.loadLaberinto( archivo )){
         
             matriz = generarMatrizMonedas(lab);
-            cout<<"Laberinto propuesto:"<<endl;
+            cout<<endl<<"Laberinto propuesto:"<<endl;
             lab.imprimirLaberinto();
             sol = reconstruirCamino(matriz);
-            imprimir(matriz);
+            if(sol.second){
+                imprimir(matriz);
+            }
+
             cout<<"Introduzca cualquier letra para continuar"<<endl;
             string str;
             cin>>str;
