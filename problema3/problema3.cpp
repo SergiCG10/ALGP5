@@ -80,8 +80,9 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
     //Rellenamos caso base para la posicion 0, n-1
     if(l.getPosicion(0, l.getColumnas()-1) != -1){
         salida[0][l.getColumnas()-1 ] = l.getPosicion(0,l.getColumnas() -1 ) == 1 ? 1: 0;
+    }else{
+         salida[0][l.getColumnas()-1 ] = -1;
     }
-    salida[0][l.getColumnas()-1 ] = -1;
 
     //Rellenamos caso base de la primera fila
     for(int j = l.getColumnas() - 2; j >= 0 ; j--){
@@ -191,6 +192,7 @@ int main(int argc, char* argv[]){
             cout<<endl<<"Laberinto propuesto:"<<endl;
             lab.imprimirLaberinto();
             sol = reconstruirCamino(matriz);
+            imprimir(matriz);
             if(sol.second){
                 imprimir(matriz);
             }
