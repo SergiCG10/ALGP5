@@ -1,0 +1,2 @@
+#Ignora los archivo .bin de la carpeta bin
+bin/*.bin
