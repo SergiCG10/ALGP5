@@ -6,7 +6,7 @@ using namespace std;
 //para escribir menos
 typedef vector<vector<int>> vvint;
 
-void imprimirMatriz(const vvint& orig);
+void imprimirMatriz(const vvint& orig, const int maximovalor);
 vvint SolucionProblema4(const vvint& mountain);
 int costeMinimo(const vvint& costes, vvint& cache,
     int altura, int anchura);
@@ -16,7 +16,7 @@ int minimo(int valor1, int valor2, int valor3);
 vector<int> obtenerSolucion(const vvint& cache);
 
 int main (int argc, char *argv[]) {
-
+  int topeSuperior = 0;
   char entradaManual = '\0';
   int altura=0, ancho=0, i, j;
   cout << "Introduzca la altura de la montaña: ";
@@ -50,15 +50,18 @@ int main (int argc, char *argv[]) {
   }
 
   if(entradaManual == 'y'){
+    int buffer;
     for(i = 0; i < altura; i++){
       for (j = 0; j < ancho; j++) {
         cout << "Piedra en la altura " << i << " y en el ancho " << j << ": ";
-        cin >> mountain[i][j];
+        cin >> buffer;
+        mountain[i][j] = buffer;
+        if(buffer > topeSuperior)
+          topeSuperior = buffer;
       }
     }
   }else{
     unsigned int seed = 0;
-    int topeSuperior = 0;
     cout << "Introduzca una semilla: ";
     cin >> seed;
     srand(seed);
@@ -72,11 +75,18 @@ int main (int argc, char *argv[]) {
       for(j = 0; j < ancho; j++)
         mountain[i][j] = rand()%topeSuperior+1;
   }
-  imprimirMatriz(mountain);
+  imprimirMatriz(mountain, topeSuperior);
   vvint resultado;
   resultado = SolucionProblema4(mountain);
   cout << endl << "Este es el resultado: " << endl;
-  imprimirMatriz(resultado);
+  if(!topeSuperior){
+    int max = resultado[0][0];
+    for(i = 1; i < resultado[0].size(); i++)
+      if(resultado[0][i] > max)
+        max = resultado[0][i];
+    topeSuperior = max;
+  }
+  imprimirMatriz(resultado, topeSuperior);
   vector<int> vector = obtenerSolucion(resultado);
   cout << endl << "Debe de escalar la montaña de la siguiente forma (contando desde 0, se lee de derecha a izquierda): " << endl;
   for(i = vector.size()-1; i >= 1; i--)
@@ -86,14 +96,26 @@ int main (int argc, char *argv[]) {
   return 0;
 }
 
-void imprimirMatriz(const vvint& orig){
+void imprimirMatriz(const vvint& orig, const int maximovalor){
+  int spaces, maxspace=1, aux, i;
+  aux = maximovalor;
+  while(aux >= 10){
+    aux/=10;
+    ++maxspace;
+  }
+
   for(vector<int> nvector: orig){
-    for(int nvalor: nvector)
-      if(nvalor < 10){
-        cout << nvalor << "  ";
-      }else{
-        cout<< nvalor << " ";
+    for(int nvalor: nvector){
+      spaces = 1;
+      cout << nvalor << " ";
+      aux = nvalor;
+      while(aux >= 10){
+        aux/=10;
+        ++spaces;
       }
+      for(i=0; i< maxspace-spaces; i++)
+        cout << " ";
+    }
     cout << endl;
   }
 }
