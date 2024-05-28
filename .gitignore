@@ -1,2 +1,3 @@
-#Ignora los archivo .bin de la carpeta bin
+#Ignora los archivo .bin y .o de la carpeta bin
 bin/*.bin
+bin/*.o
