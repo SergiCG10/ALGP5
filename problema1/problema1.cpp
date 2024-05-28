@@ -71,7 +71,7 @@ void floydWarshall(const vector<vector<int>>& c, vector<vector<int>>& dist, vect
 }
 
 int main() {
-    // Definir la matriz de costos
+    // Definir la matriz de costes
     
     vector<vector<int>> c = {
         {0, 3, 3, INF, INF},
@@ -114,8 +114,12 @@ int main() {
     // Recuperar e imprimir el camino más corto entre dos nodos
     int i; // nodo de inicio
     int f; // nodo de llegada
-    cout << " \n Indique el pueblo de inicio y el pueblo final de su trayecto:\n";
+    cout << " \n Indique el pueblo de inicio y el pueblo final de su trayecto en el intervalo [1,5]:\n";
     cin >> i >> f;
+    while( i > f){
+        cout<< "No puede ir a contracorriente, debe de introducir un valor inicial menor que el final, vuelva a introducir los datos [1,5]:\n";
+        cin >> i >> f;
+    }
     i--;
     f--;
     vector<int> path;
