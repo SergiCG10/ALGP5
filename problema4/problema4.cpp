@@ -175,33 +175,33 @@ vector<int> obtenerSolucion(const vvint& cache){
     return laSolucion;
   }
 
-  int i, j, minimo, iMejor;
+  int i, j, minimo, jMejor;
   minimo = cache[0][0];
-  iMejor = 0;
-  for(i = 1; i < cache[0].size(); i++)
-    if(cache[0][i] < minimo){
-      minimo = cache[0][i];
-      iMejor = i;
+  jMejor = 0;
+  for(j = 1; j < cache[0].size(); j++)
+    if(cache[0][j] < minimo){
+      minimo = cache[0][j];
+      jMejor = j;
     }
-  laSolucion.push_back(iMejor);
+  laSolucion.push_back(jMejor);
 
-  for(j = 1; j < cache.size(); j++){
-    if(iMejor == 0){//Estamos en el borde de la izquierda
-      if(cache[j][0] > cache[j][1])
-        iMejor = 1;
-    }else if(iMejor == cache[0].size()-1){ //Ahora en el de la derecha
-      if(cache[j][iMejor] > cache[j][iMejor-1]) //Ahora en el de la derecha
-        --iMejor;
+  for(i = 1; i < cache.size(); i++){
+    if(jMejor == 0){//Estamos en el borde de la izquierda
+      if(cache[i][0] > cache[i][1])
+        jMejor = 1;
+    }else if(jMejor == cache[0].size()-1){ //Ahora en el de la derecha
+      if(cache[i][jMejor] > cache[i][jMejor-1]) //Ahora en el de la derecha
+        --jMejor;
 
     }else{ //No estamos en los bordes
-      if(cache[j][iMejor-1] < cache[j][iMejor+1])
-        iMejor = cache[j][iMejor-1] < cache[j][iMejor] ?
-          iMejor-1 : iMejor;
+      if(cache[i][jMejor-1] < cache[i][jMejor+1])
+        jMejor = cache[i][jMejor-1] < cache[i][jMejor] ?
+          jMejor-1 : jMejor;
       else
-        iMejor = cache[j][iMejor+1] < cache[j][iMejor] ?
-          iMejor+1 : iMejor;
+        jMejor = cache[i][jMejor+1] < cache[i][jMejor] ?
+          jMejor+1 : jMejor;
     }
-    laSolucion.push_back(iMejor);
+    laSolucion.push_back(jMejor);
   }
   return laSolucion;
 }
