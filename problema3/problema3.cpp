@@ -56,7 +56,7 @@ void imprimir(vector<vector<int>>matriz){
     for(int i = 0; i < matriz.size(); i++){
         cout<<i<<"  ";
         for(int j = 0; j < matriz[i].size(); j++){
-            if(matriz[i][j] == -1 || matriz[i][j]> 10){
+            if(matriz[i][j] == -1 || matriz[i][j]>= 10){
                 cout<<matriz[i][j]<<" ";
             }else{
                 cout<<" "<<matriz[i][j]<<" ";
