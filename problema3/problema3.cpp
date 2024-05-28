@@ -192,11 +192,8 @@ int main(int argc, char* argv[]){
             cout<<endl<<"Laberinto propuesto:"<<endl;
             lab.imprimirLaberinto();
             sol = reconstruirCamino(matriz);
+            imprimir(matriz);
             
-            if(sol.second){
-                imprimir(matriz);
-            }
-
             cout<<"Introduzca cualquier letra para continuar"<<endl;
             string str;
             cin>>str;
