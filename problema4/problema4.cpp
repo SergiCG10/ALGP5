@@ -89,7 +89,11 @@ int main (int argc, char *argv[]) {
 void imprimirMatriz(const vvint& orig){
   for(vector<int> nvector: orig){
     for(int nvalor: nvector)
-      cout << nvalor << " ";
+      if(nvalor < 10){
+        cout << nvalor << "  ";
+      }else{
+        cout<< nvalor << " ";
+      }
     cout << endl;
   }
 }
