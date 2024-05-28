@@ -79,13 +79,9 @@ int main (int argc, char *argv[]) {
   vvint resultado;
   resultado = SolucionProblema4(mountain);
   cout << endl << "Este es el resultado: " << endl;
-  if(!topeSuperior){
-    int max = resultado[0][0];
-    for(i = 1; i < resultado[0].size(); i++)
-      if(resultado[0][i] > max)
-        max = resultado[0][i];
-    topeSuperior = max;
-  }
+  for(i = 1; i < resultado[0].size(); i++)
+    if(resultado[0][i] > topeSuperior)
+      topeSuperior = resultado[0][i];
   imprimirMatriz(resultado, topeSuperior);
   vector<int> vector = obtenerSolucion(resultado);
   cout << endl << "Debe de escalar la montaña de la siguiente forma (contando desde 0, se lee de derecha a izquierda): " << endl;
