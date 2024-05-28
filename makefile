@@ -48,12 +48,12 @@ ejemplos:
 	@echo
 	@echo "Problema 1\n"
 	@echo "\tPara el problema1, pruebe a ejecutar: \n\t\t./bin/problema1.bin\n"
-	@echo "\t\tDespués de esto, añada dos números distintos entre 1 y 5 ambos inclusive, para calcular el recorrido desde el primero al segundo "
+	@echo "\t\tDespués de esto, añada dos números distintos entre 1 y 5 ambos inclusive, para calcular el recorrido desde el primero al segundo \n"
 
 	@echo "Problema 2\n"
-	@echo "\tPara el problema2, pruebe a ejecutar: \n\t\t./bin/problema2.bin\n"
+	@echo "\tPara el problema2, pruebe a ejecutar: \n\t\t./bin/problema2.bin 5 123123124\n"
 	@echo "\t\tDespués de esto, añada \"5 5 n 3242 5\" para ejecutar para una montaña de tamaño 5x5 "
-	@echo "\t\tDespués de esto, para otro ejemplo, añada \"10 10 n 1092301923 15\" para ejecutar para una montaña de tamaño 10x10 \n\n"
+	@echo "\t\tDespués de esto, para otro ejemplo, añada \"10 10 n 1092301923 15\" para ejecutar para una montaña de tamaño 10x10 \n"
 
 	@echo "Problema 3\n"
 	@echo "\tPara el problema3 pruebe a ejecutar: \n\t\t./bin/problema3.bin bin/laberintos/ejemploPropuesto\n"
