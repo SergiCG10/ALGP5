@@ -144,7 +144,7 @@ pair< vector<pair<int,int>>, bool> reconstruirCamino(vector<vector<int>> matriz)
     bool posible = true;
     pair< vector<pair<int,int>>, bool> salida;
 
-    if( matriz[0][matriz[0].size()] == -1){
+    if( matriz[matriz.size() -1][0] == -1){
         posible = false;
     }else{
         v.push_back( make_pair(posI,posJ));
@@ -192,7 +192,7 @@ int main(int argc, char* argv[]){
             cout<<endl<<"Laberinto propuesto:"<<endl;
             lab.imprimirLaberinto();
             sol = reconstruirCamino(matriz);
-            imprimir(matriz);
+            
             if(sol.second){
                 imprimir(matriz);
             }
