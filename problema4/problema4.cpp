@@ -21,22 +21,25 @@ int main (int argc, char *argv[]) {
   int altura=0, ancho=0, i, j;
   cout << "Introduzca la altura de la montaña: ";
   cin >> altura;
-  while (altura <= 0){
-    cout << "Altura no válida (altura > 0): ";
+  while (altura < 0){
+    cout << "Altura no válida (altura >= 0): ";
     cin >> altura;
   }
 
   cout << "Introduzca el ancho de la montaña: ";
   cin >> ancho;
-  while (altura <= 0){
-    cout << "Ancho no válido (ancho > 0): ";
+  while (altura < 0){
+    cout << "Ancho no válido (ancho >= 0): ";
     cin >> ancho;
   }
   
   vvint mountain;
+  if(altura > 0){
   mountain.resize(altura);
-  for(i = 0; i < altura; i++)
-    mountain[i].resize(ancho);
+  if(ancho > 0)
+    for(i = 0; i < altura; i++)
+      mountain[i].resize(ancho);
+  }
 
   cout << "Quiere introducir manualmente los costes de la montaña? [y/n] ";
   cin >> entradaManual;
@@ -56,13 +59,13 @@ int main (int argc, char *argv[]) {
   }else{
     unsigned int seed = 0;
     int topeSuperior = 0;
-    cout << "Introduzca una semillilla: ";
+    cout << "Introduzca una semilla: ";
     cin >> seed;
     srand(seed);
-    cout << "Introduzca el costecito máximo posible (mayor o igual a 5): ";
+    cout << "Introduzca el coste máximo posible (mayor o igual a 5): ";
     cin >> topeSuperior;
     while (topeSuperior < 5){
-      cout << "Numerito no permitido (tiene que ser mayor o igual a 5): ";
+      cout << "Numero no permitido (tiene que ser mayor o igual a 5): ";
       cin >> topeSuperior;
     }
     for(i = 0; i < altura; i++)
@@ -75,7 +78,7 @@ int main (int argc, char *argv[]) {
   cout << endl << "Este es el resultado: " << endl;
   imprimirMatriz(resultado);
   vector<int> vector = obtenerSolucion(resultado);
-  cout << endl << "Debe de escalar la montañita de la siguiente forma (contandito desde 0): " << endl;
+  cout << endl << "Debe de escalar la montaña de la siguiente forma (contando desde 0, se lee de derecha a izquierda): " << endl;
   for(i = vector.size()-1; i >= 1; i--)
     cout << vector[i] << "-";
   cout << vector[i];
@@ -94,13 +97,28 @@ void imprimirMatriz(const vvint& orig){
 vvint SolucionProblema4(const vvint& mountain){
   vvint resultado;
   int i;
+
+  if(mountain.size() == 0 || mountain[0].size() == 0){ //No tiene altura o ancho
+    resultado.resize(1);
+    resultado[0].resize(1, 0);
+    return resultado;
+  } 
+
   resultado.resize(mountain.size());
   for(i = 0; i < mountain.size(); i++)
-    resultado[i].resize(mountain[i].size(), -1);
+    resultado[i].resize(mountain[0].size(), -1);
   
-  for(i = 0; i < resultado[0].size(); i++){
-    costeMinimo(mountain, resultado, 0, i);
-  }
+  if(resultado[0].size() == 1){ //Montaña de ancho 1
+      
+    i = resultado.size()-1;
+    resultado[i][0] = mountain[i][0];
+    for(i = i-1; i >= 0; i--)
+      resultado[i][0] = resultado[i+1][0] + mountain[i][0];
+
+  }else
+    for(i = 0; i < resultado[0].size(); i++)
+      costeMinimo(mountain, resultado, 0, i);
+
   return resultado;
 }
 
@@ -150,6 +168,13 @@ int minimo(int valor1, int valor2, int valor3){
 vector<int> obtenerSolucion(const vvint& cache){
   vector<int> laSolucion;
   laSolucion.reserve(cache.size());
+
+  if(cache[0].size() == 1){ //Montaña de uno de ancho
+    for(int i = 0; i < cache.size(); i++)
+      laSolucion.push_back(0);
+    return laSolucion;
+  }
+
   int i, j, minimo, iMejor;
   minimo = cache[0][0];
   iMejor = 0;
@@ -161,14 +186,14 @@ vector<int> obtenerSolucion(const vvint& cache){
   laSolucion.push_back(iMejor);
 
   for(j = 1; j < cache.size(); j++){
-    if(iMejor == 0 &&
-        cache[j][0] > cache[j][1]) //Estamos en el borde de la izquierda
-      iMejor = 1;
-    else if(iMejor == cache[0].size()-1 && cache[j][iMejor]
-        < cache[j][iMejor-1]) //Ahora en el de la derecha
-      --iMejor;
+    if(iMejor == 0){//Estamos en el borde de la izquierda
+      if(cache[j][0] > cache[j][1])
+        iMejor = 1;
+    }else if(iMejor == cache[0].size()-1){ //Ahora en el de la derecha
+      if(cache[j][iMejor] > cache[j][iMejor-1]) //Ahora en el de la derecha
+        --iMejor;
 
-    else{
+    }else{ //No estamos en los bordes
       if(cache[j][iMejor-1] < cache[j][iMejor+1])
         iMejor = cache[j][iMejor-1] < cache[j][iMejor] ?
           iMejor-1 : iMejor;
