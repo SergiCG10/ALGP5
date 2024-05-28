@@ -90,7 +90,7 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
         llegamosMuro = llegamosMuro || l.getPosicion(0,j) == -1;
 
         if(!llegamosMuro){
-            valor = l.getPosicion(0,j+1) == 1 ? 1: 0;
+            valor = l.getPosicion(0,j) == 1 ? 1: 0;
             salida[0][j] = salida[0][j+1] + valor;
         }else{
             salida[0][j] = -1;
@@ -105,7 +105,7 @@ vector< vector<int> > generarMatrizMonedas(Laberinto l){
         llegamosMuro = llegamosMuro || l.getPosicion(i,l.getColumnas()-1) == -1;
 
         if(!llegamosMuro){   
-            valor = l.getPosicion(i-1,l.getColumnas()-1) == 1 ? 1: 0;
+            valor = l.getPosicion(i,l.getColumnas()-1) == 1 ? 1: 0;
             salida[i][l.getColumnas()-1] = salida[i-1][l.getColumnas()-1] + valor;
         }else{
             salida[i][l.getColumnas()-1] = -1;
