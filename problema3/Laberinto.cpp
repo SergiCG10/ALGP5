@@ -254,11 +254,7 @@ void Laberinto::imprimirLaberinto(){
         }
         cout<<endl;
         for(int i = 0; i < filas; i++){
-            if(i != filas -1){
-                    cout<<" ■";
-            }else{
-                cout<<"  ";
-            }
+            cout<<" ■";
             for(int j = 0; j < columnas; j++){
                 if( this->getPosicion(i,j) == 1){
                     cout<<" ○";
@@ -268,9 +264,7 @@ void Laberinto::imprimirLaberinto(){
                     cout<<"  ";
                 }
             }
-            if(i != 0){
-                    cout<<" ■";
-            }
+            cout<<" ■";
             cout<<endl;
         }
         for(int i = 0; i < columnas +2; i++){
@@ -293,11 +287,7 @@ void Laberinto::imprimirLaberintoRecorrido(){
         }
         cout<<endl;
         for(int i = 0; i < filas; i++){
-            if(i != filas-1){
-                    cout<<" ■";
-            }else{
-                cout<<"  ";
-            }
+            cout<<" ■";
             for(int j = 0; j < columnas; j++){
                 
                 if( !getRecorrida(i,j)){
@@ -313,9 +303,7 @@ void Laberinto::imprimirLaberintoRecorrido(){
                     cout<<" □";
                 }
             }
-            if(i != 0){
-                    cout<<" ■";
-            }
+            cout<<" ■";
             cout<<endl;
         }
         for(int i = 0; i < columnas +2; i++){
