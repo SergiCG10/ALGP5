@@ -52,14 +52,15 @@ ejemplos:
 
 	@echo "Problema 2\n"
 	@echo "\tPara el problema2, pruebe a ejecutar: \n\t\t./bin/problema2.bin 5 123123124\n"
-	@echo "\t\tDespués de esto, añada \"5 5 n 3242 5\" para ejecutar para una montaña de tamaño 5x5 "
-	@echo "\t\tDespués de esto, para otro ejemplo, añada \"10 10 n 1092301923 15\" para ejecutar para una montaña de tamaño 10x10 \n"
+	@echo "\t\tDespués de ejecutar el programa, añada:"
+	@echo "\t\t\"y 1 10 10 10 10 1 10 10 10 10 1 10 10 10 10 1 10 10 10 10 0 4\"\n"  
+	@echo "\t\tOtro ejemplo: tras ejecutar con la misma llamada, añada \"n 1 2\"\n"
 
 	@echo "Problema 3\n"
 	@echo "\tPara el problema3 pruebe a ejecutar: \n\t\t./bin/problema3.bin bin/laberintos/ejemploPropuesto\n"
 	@echo "\tOtro ejemplo: \n\t\t./bin/problema3.bin bin/laberintos/ejemploGrande\n"
 	@echo "\tOtro ejemplo: \n\t\t./bin/problema3.bin bin/laberintos/ejemploSinSol2\n"
-	@echo "Tras ejecutar, pulse cualquier tecla para ver el camino que maximiza las monedas"
+	@echo "\tTras ejecutar, pulse cualquier tecla para ver el camino que maximiza las monedas\n"
 
 	@echo "Problema 4\n"
 	@echo "\tPara el problema4 pruebe a ejecutar: \n\t\t./bin/problema4.bin\n"
