@@ -22,20 +22,21 @@ void printMatrix(const vector<vector<int>>& dist) {
 }
 
 // Función para recuperar el camino más corto entre dos nodos
-void getPath(int u, int v, const vector<vector<int>>& next, vector<int>& path) {
+void getPath(int i, int f, const vector<vector<int>>& next, vector<int>& path) {
 
     int n = next.size();
-    if (u < 0 || u >= n || v < 0 || v >= n) {
+    if (i < 0 || i >= n || f < 0 || f >= n) {
         throw out_of_range("Las paradas inicial o final están fuera de los límites del rio.");
     }
     
-    if (next[u][v] == -1) {
+    if (next[i][f] == -1) {
+        cout << "No hay manera de llegar de un pueblo a otro \n";
         return;
     }
-    path.push_back(u);
-    while (u != v) {
-        u = next[u][v];
-        path.push_back(u);
+    path.push_back(i);
+    while (i != f) {
+        i = next[i][f];
+        path.push_back(i);
     }
 }
 
@@ -113,13 +114,13 @@ int main() {
     // Recuperar e imprimir el camino más corto entre dos nodos
     int i; // nodo de inicio
     int f; // nodo de llegada
-    cout << " \n Indique el punto de inicio y el punto final de su trayecto: \n";
+    cout << " \n Indique el pueblo de inicio y el pueblo final de su trayecto:\n";
     cin >> i >> f;
     i--;
     f--;
     vector<int> path;
 
-    //Recupera el trayecto más cortos de los putnos introducidos
+    //Recupera el trayecto más corto de los putnos introducidos
     getPath(i, f, predecesores, path);
 
     cout << "Camino más corto (con un coste de " << distMin[i][f] <<  ") de " << i+1 << " a " << f+1 << ":" << endl;
